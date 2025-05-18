@@ -1,0 +1,19 @@
+# Production PostgreSQL Configuration
+spring.datasource.url=jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:order_processing_db}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Production-specific settings
+spring.jpa.hibernate.ddl-auto=none
+logging.level.com.example.orderprocessing=WARN
+
+# Additional Security Settings
+server.ssl.enabled=${SSL_ENABLED:false}
+server.ssl.key-store=${SSL_KEYSTORE_PATH}
+server.ssl.key-store-password=${SSL_KEYSTORE_PASSWORD}
+
+# Rate Limiting
+spring.cloud.gateway.default-filters[0].name=RequestRateLimiter
+spring.cloud.gateway.default-filters[0].args.redis-rate-limiter.replenishRate=${RATE_LIMIT_REPLENISH_RATE:10}
+spring.cloud.gateway.default-filters[0].args.redis-rate-limiter.burstCapacity=${RATE_LIMIT_BURST_CAPACITY:20} 
